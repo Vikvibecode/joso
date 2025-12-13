@@ -1,0 +1,325 @@
+@import './styles/variables.css';
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  scrollbar-width: none;
+  /* Firefox */
+  -ms-overflow-style: none;
+  /* IE/Edge */
+}
+
+body::-webkit-scrollbar {
+  display: none;
+  /* Chrome/Safari/Opera */
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  position: relative;
+
+  /* Ambient Background */
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(30, 30, 40, 0.3) 0%, transparent 70%);
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.text-serif {
+  font-family: var(--font-serif);
+}
+
+.title-hero {
+  font-family: var(--font-serif);
+  font-size: 3.5rem;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  text-align: center;
+  background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0.7));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+}
+
+/* Premium Button Animation */
+@property --angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.btn-premium-glow {
+  position: relative;
+  background: #0f0b15;
+  /* Slightly purple-tinted dark */
+  color: #fff;
+  font-weight: 600;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  padding: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.3s ease;
+  /* Stronger initial glow */
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.3), 0 0 4px rgba(139, 92, 246, 0.5);
+  mask-image: -webkit-radial-gradient(white, black);
+}
+
+/* Inner content area */
+.btn-premium-glow-content {
+  background: linear-gradient(135deg, rgba(20, 15, 30, 0.95), rgba(10, 8, 15, 0.95));
+  width: 100%;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.75rem;
+  z-index: 2;
+  position: relative;
+  transition: background 0.3s;
+  gap: 0.5rem;
+  /* Inner subtle glow */
+  box-shadow: inset 0 0 15px rgba(139, 92, 246, 0.1);
+}
+
+/* Traveling Stroke Layer */
+.btn-premium-glow::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  background: conic-gradient(from var(--angle),
+      transparent 70%,
+      rgba(139, 92, 246, 0.4) 85%,
+      rgba(139, 92, 246, 1) 95%,
+      #a78bfa 100%
+      /* Brighter tip */
+    );
+  transform: translate(-50%, -50%);
+  animation: rotate 3s linear infinite;
+  /* Slightly faster for more energy */
+  z-index: 1;
+  filter: blur(4px);
+  /* Blur the stroke for glow effect */
+}
+
+/* Extra outer glow layer */
+.btn-premium-glow::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 105%;
+  height: 105%;
+  background: inherit;
+  border-radius: inherit;
+  z-index: -1;
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+}
+
+.btn-premium-glow:hover {
+  box-shadow: 0 0 35px rgba(139, 92, 246, 0.6), 0 0 10px rgba(139, 92, 246, 0.8);
+  transform: scale(1.03);
+}
+
+.btn-premium-glow:hover .btn-premium-glow-content {
+  background: linear-gradient(135deg, rgba(30, 20, 50, 0.95), rgba(15, 10, 25, 0.95));
+}
+
+.btn-premium-glow:active {
+  transform: scale(0.98);
+}
+
+.btn-premium-glow:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.8);
+}
+
+@keyframes rotate {
+  from {
+    --angle: 0deg;
+  }
+
+  to {
+    --angle: 360deg;
+  }
+}
+
+@keyframes rotate {
+  0% {
+    --angle: 0deg;
+  }
+
+  100% {
+    --angle: 360deg;
+  }
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-container {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-content {
+  display: flex;
+  min-width: 100%;
+  animation: marquee 30s linear infinite;
+}
+
+.marquee-content:hover {
+  animation-play-state: paused;
+}
+
+/* Feature Grid Linking */
+.feature-card {
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  background: rgba(139, 92, 246, 0.08) !important;
+  border-color: rgba(139, 92, 246, 0.3);
+  box-shadow: 0 10px 30px -10px rgba(139, 92, 246, 0.2);
+}
+
+.feature-card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: -1.5rem;
+  width: 1.5rem;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.6), transparent);
+  z-index: 0;
+  opacity: 0;
+  animation: pulse-line 4s infinite;
+  pointer-events: none;
+}
+
+.feature-card::before {
+  content: '';
+  position: absolute;
+  bottom: -1.5rem;
+  left: 50%;
+  width: 1px;
+  height: 1.5rem;
+  background: linear-gradient(180deg, rgba(139, 92, 246, 0.6), transparent);
+  z-index: 0;
+  opacity: 0;
+  animation: pulse-line 4s infinite 2s;
+  pointer-events: none;
+}
+
+@keyframes pulse-line {
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 12px rgba(139, 92, 246, 0.8);
+  }
+}
+
+/* Vertical Scroll Line */
+.scroll-line-container {
+  position: absolute;
+  left: 50%;
+  top: 13rem;
+  bottom: 4rem;
+  width: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateX(-50%);
+  display: none;
+  z-index: 0;
+}
+
+.scroll-line-fill {
+  width: 100%;
+  height: 0;
+  background: linear-gradient(180deg, var(--accent-purple), #d8b4fe);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.6);
+  transition: height 0.1s linear;
+}
+
+@media (min-width: 768px) {
+  .scroll-line-container {
+    display: block;
+  }
+}
+
+/* Responsive Logo Sizing */
+.logo-header {
+  height: 40px;
+  width: auto;
+  transition: height 0.3s ease;
+}
+
+.logo-footer {
+  height: 48px;
+  width: auto;
+  transition: height 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .logo-header {
+    height: 48px;
+  }
+
+  .logo-footer {
+    height: 72px;
+  }
+}
