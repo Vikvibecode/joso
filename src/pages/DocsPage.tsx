@@ -2,7 +2,7 @@ import React from 'react';
 
 export const DocsPage: React.FC = () => {
     return (
-        <div className="container" style={{ padding: '8rem 1rem 4rem', maxWidth: '900px', margin: '0 auto' }}>
+        <div className="container docs-container" style={{ maxWidth: '900px', margin: '0 auto' }}>
             <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: '2.5rem', marginBottom: '0.5rem' }}>
                 Documentation
             </h1>

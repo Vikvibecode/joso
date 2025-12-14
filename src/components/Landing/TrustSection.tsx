@@ -22,7 +22,7 @@ export const TrustSection: React.FC = () => {
             overflow: 'hidden'
         }}>
             <div className="marquee-container" style={{ marginBottom: '2rem' }}>
-                <div className="marquee-content" style={{ gap: '4rem', paddingRight: '4rem' }}>
+                <div className="marquee-content" style={{ gap: '2rem', paddingRight: '2rem' }}>
                     {[...companies, ...companies, ...companies].map((company, i) => (
                         <div key={i} style={{
                             display: 'flex',

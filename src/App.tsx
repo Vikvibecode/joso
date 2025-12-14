@@ -150,13 +150,14 @@ function App() {
         <p style={{
           marginTop: '1.5rem',
           color: 'var(--text-secondary)',
-          fontSize: '1.25rem',
+          fontSize: 'var(--mobile-text-lg, 1.25rem)', // Will need to define or use a clamping value
           letterSpacing: '0.01em',
           fontWeight: 300,
           maxWidth: '600px',
           marginLeft: 'auto',
           marginRight: 'auto',
-          lineHeight: '1.5'
+          lineHeight: '1.5',
+          padding: '0 1rem'
         }}>
           Write in natural language.<br />
           Joso converts it into clean, validated, production-ready JSON — instantly.
@@ -230,7 +231,7 @@ function App() {
             </h3>
             <div style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
               gap: '2rem'
             }}>
               {[

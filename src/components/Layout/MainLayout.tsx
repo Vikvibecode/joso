@@ -42,7 +42,9 @@ export const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
         position: 'relative',
         zIndex: 1,
         maxWidth: '1200px', // Increased max-width for landing pages
-        margin: '0 auto'
+        margin: '0 auto',
+        width: '100%',
+        overflowX: 'hidden'
       }}>
         {children}
       </main>
