@@ -7,11 +7,21 @@ interface InputAreaProps {
     onClear?: () => void;
     isGenerating: boolean;
     isLanding?: boolean;
+    mode?: string;
+    onModeChange?: (mode: string) => void;
 }
 
-export const InputArea: React.FC<InputAreaProps> = ({ prompt, setPrompt, onSubmit, onClear, isGenerating, isLanding = false }) => {
+export const InputArea: React.FC<InputAreaProps> = ({
+    prompt,
+    setPrompt,
+    onSubmit,
+    onClear,
+    isGenerating,
+    isLanding = false,
+    mode = 'Balanced',
+    onModeChange
+}) => {
     const [isFocused, setIsFocused] = useState(false);
-    const [mode, setMode] = useState('Balanced');
     const [placeholder, setPlaceholder] = useState('');
 
     React.useEffect(() => {
@@ -111,12 +121,12 @@ export const InputArea: React.FC<InputAreaProps> = ({ prompt, setPrompt, onSubmi
                 }}>
                     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         {/* Simple Mode Pills */}
-                        {['Balanced', 'Strict', 'Creative'].map((m) => {
+                        {['Balanced', 'Strict', 'Creative', 'TypeScript', 'Zod'].map((m) => {
                             const isActive = mode === m;
                             return (
                                 <button
                                     key={m}
-                                    onClick={() => setMode(m)}
+                                    onClick={() => onModeChange?.(m)}
                                     style={{
                                         fontSize: '0.75rem',
                                         padding: '0.3rem 0.8rem',

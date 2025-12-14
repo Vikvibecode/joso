@@ -11,22 +11,43 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ data, isLoading }) => 
     const [isMinified, setIsMinified] = useState(false);
     const timeoutsRef = useRef<number[]>([]);
 
-    // Syntax highlighting for JSON
-    const syntaxHighlight = (json: string): string => {
-        // Parse and re-stringify to ensure valid JSON, then apply regex highlighting
-        return json
-            .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?)/g, (match) => {
-                if (/:$/.test(match)) {
-                    // Key
-                    return `<span style="color: #a78bfa;">${match.slice(0, -1)}</span>:`;
-                }
-                // String value
-                return `<span style="color: #34d399;">${match}</span>`;
-            })
-            .replace(/\b(true|false)\b/g, '<span style="color: #f472b6;">$1</span>')
-            .replace(/\b(null)\b/g, '<span style="color: #94a3b8;">$1</span>')
-            .replace(/\b(-?\d+\.?\d*)\b/g, '<span style="color: #fbbf24;">$1</span>');
+    // Syntax highlighting for JSON (simulated for code)
+    const syntaxHighlight = (text: string): string => {
+        // Simple check if it looks like JSON
+        if (text.trim().startsWith('{') || text.trim().startsWith('[')) {
+            return text
+                .replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?)/g, (match) => {
+                    if (/:$/.test(match)) {
+                        return `<span style="color: #a78bfa;">${match.slice(0, -1)}</span>:`;
+                    }
+                    return `<span style="color: #34d399;">${match}</span>`;
+                })
+                .replace(/\b(true|false)\b/g, '<span style="color: #f472b6;">$1</span>')
+                .replace(/\b(null)\b/g, '<span style="color: #94a3b8;">$1</span>')
+                .replace(/\b(-?\d+\.?\d*)\b/g, '<span style="color: #fbbf24;">$1</span>');
+        }
+        // Fallback for code (basic coloring)
+        return text
+            .replace(/\b(interface|type|export|const|import|from|z)\b/g, '<span style="color: #f472b6;">$1</span>')
+            .replace(/\b(string|number|boolean|Date)\b/g, '<span style="color: #fbbf24;">$1</span>');
     };
+
+    const isValidJson = (text: string) => {
+        try {
+            JSON.parse(text);
+            return true;
+        } catch {
+            return false;
+        }
+    };
+
+    const isValidCode = (text: string) => {
+        // Naive code validation
+        return text.includes('interface') || text.includes('z.object') || text.includes('type ');
+    };
+
+    const isValid = data ? (isValidJson(data) || isValidCode(data)) : false;
+    const isCode = data && isValidCode(data);
 
     useEffect(() => {
         // Reset when data changes or cleared
@@ -40,7 +61,7 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ data, isLoading }) => 
 
         setDisplayedContent('');
         let currentText = '';
-        const speed = 10; // ms per char
+        const speed = 2; // Faster typing for code
 
         data.split('').forEach((char, index) => {
             const timeout = window.setTimeout(() => {
@@ -54,6 +75,9 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ data, isLoading }) => 
             timeoutsRef.current.forEach(clearTimeout);
         };
     }, [data]);
+
+    // ... (rest of component) ...
+
 
     const handleCopy = () => {
         if (!data) return;
@@ -132,10 +156,30 @@ export const OutputPanel: React.FC<OutputPanelProps> = ({ data, isLoading }) => 
                     flexWrap: 'wrap',
                     gap: '1rem'
                 }}>
-                    <div style={{ display: 'flex', gap: '0.5rem' }}>
-                        <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--accent-red)' }} />
-                        <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--accent-amber)' }} />
-                        <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--accent-green)' }} />
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', gap: '0.5rem' }}>
+                            <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--accent-red)' }} />
+                            <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--accent-amber)' }} />
+                            <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--accent-green)' }} />
+                        </div>
+                        {/* Validation Badge */}
+                        {data && !isLoading && (
+                            <div style={{
+                                marginLeft: '1rem',
+                                padding: '0.2rem 0.6rem',
+                                borderRadius: 'var(--radius-pill)',
+                                background: isValid ? 'rgba(16, 185, 129, 0.1)' : 'rgba(239, 68, 68, 0.1)',
+                                border: isValid ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid rgba(239, 68, 68, 0.2)',
+                                color: isValid ? '#34d399' : '#f87171',
+                                fontSize: '0.7rem',
+                                fontWeight: 600,
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '0.3rem'
+                            }}>
+                                {isValid ? '✓ Valid' : '⚠ Invalid'} {isCode ? 'Code' : 'JSON'}
+                            </div>
+                        )}
                     </div>
 
                     <div style={{ display: 'flex', gap: '1rem' }}>

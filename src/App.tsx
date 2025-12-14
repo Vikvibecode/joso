@@ -26,6 +26,7 @@ function App() {
   const [apiKey] = useState(''); // simplified
   const [showApp, setShowApp] = useState(false); // View switcher
   const [currentPage, setCurrentPage] = useState(''); // Hash-based routing
+  const [mode, setMode] = useState('Balanced');
 
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
@@ -36,24 +37,55 @@ function App() {
     try {
       if (apiKey) {
         const service = new GeminiService(apiKey);
-        const result = await service.generateJson(prompt);
+        const result = await service.generateJson(prompt, mode);
         setJsonOutput(result);
       } else {
         // Fallback Mock Logic
+        // Fallback Mock Logic
         setTimeout(() => {
-          const mockResponse = {
-            meta: { intent: "generated_from_prompt", model: "joso-v1-beta" },
-            data: {
-              prompt: prompt,
-              status: "success",
-              entities: [
-                { id: 1, type: "concept", value: "Natural Language" },
-                { id: 2, type: "target", value: "JSON" }
+          let mockData: any = {};
+
+          if (mode === 'Strict') {
+            mockData = {
+              id: 123,
+              name: "Joso",
+              active: true
+            };
+          } else if (mode === 'Creative') {
+            mockData = {
+              projectName: "Project Joso",
+              version: "1.0.0-beta",
+              features: [
+                { id: "f1", name: "Natural Language Processing", status: "stable", complexity: 8 },
+                { id: "f2", name: "Structured Output", status: "active", complexity: 5 }
               ],
-              timestamp: new Date().toISOString()
-            }
-          };
-          setJsonOutput(JSON.stringify(mockResponse, null, 2));
+              metadata: {
+                created: new Date().toISOString(),
+                author: "System",
+                tags: ["ai", "json", "developer-tools"]
+              },
+              colorPalette: {
+                primary: "#8b5cf6",
+                secondary: "#10b981",
+                background: "#0f0b15"
+              }
+            };
+          } else {
+            // Balanced
+            mockData = {
+              request: prompt,
+              generated: true,
+              timestamp: new Date().toISOString(),
+              summary: "This is a balanced JSON output."
+            };
+          }
+
+          if (typeof mockData === 'string') {
+            setJsonOutput(mockData);
+          } else {
+            setJsonOutput(JSON.stringify(mockData, null, 2));
+          }
+
           setIsGenerating(false);
         }, 1500);
       }
@@ -172,6 +204,8 @@ function App() {
             onSubmit={() => setShowApp(true)}
             isGenerating={false}
             isLanding={true}
+            mode={mode}
+            onModeChange={setMode}
           />
           <div style={{ marginTop: '1.5rem', opacity: 0.7, fontSize: '0.9rem', display: 'flex', gap: '0.75rem', alignItems: 'center', color: 'var(--text-secondary)' }}>
             <span>No sign up required</span>
@@ -192,6 +226,8 @@ function App() {
             onSubmit={handleGenerate}
             onClear={handleClear}
             isGenerating={isGenerating}
+            mode={mode}
+            onModeChange={setMode}
           />
           <OutputPanel
             data={jsonOutput}
