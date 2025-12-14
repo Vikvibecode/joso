@@ -119,7 +119,7 @@ export const InputArea: React.FC<InputAreaProps> = ({
                     gap: '1rem',
                     flexWrap: 'wrap'
                 }}>
-                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
                         {/* Simple Mode Pills */}
                         {['Balanced', 'Strict', 'Creative', 'TypeScript', 'Zod'].map((m) => {
                             const isActive = mode === m;

@@ -302,7 +302,7 @@ body {
   width: 2px;
   background: rgba(255, 255, 255, 0.05);
   transform: translateX(-50%);
-  display: none;
+  display: block;
   z-index: 0;
 }
 
@@ -314,11 +314,7 @@ body {
   transition: height 0.1s linear;
 }
 
-@media (min-width: 768px) {
-  .scroll-line-container {
-    display: block;
-  }
-}
+
 
 /* Responsive Logo Sizing */
 .logo-header {

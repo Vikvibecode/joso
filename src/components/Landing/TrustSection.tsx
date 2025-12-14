@@ -43,7 +43,7 @@ export const TrustSection: React.FC = () => {
                     ))}
                 </div>
             </div>
-            <p>Used by builders, designers, and product teams shaping AI-first workflows.</p>
+            <p style={{ maxWidth: '90%', margin: '0 auto', lineHeight: '1.6' }}>Used by builders, designers, and product teams shaping AI-first workflows.</p>
         </section>
     );
 };
