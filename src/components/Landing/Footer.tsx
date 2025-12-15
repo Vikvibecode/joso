@@ -49,6 +49,18 @@ export const Footer: React.FC = () => {
                         All systems normal
                     </div>
 
+
+                    {/* Peerlist Badge */}
+                    <div style={{ marginBottom: '2rem' }}>
+                        <a href="https://peerlist.io/vikasacharya/project/joso--intent-into-structure" target="_blank" rel="noreferrer">
+                            <img
+                                src="https://peerlist.io/api/v1/projects/embed/PRJHP6LRJABKMP9DDF6E6LD8GDJB7Q?showUpvote=false&theme=dark"
+                                alt="JOSO | Intent Into Structure "
+                                style={{ width: 'auto', height: '72px' }}
+                            />
+                        </a>
+                    </div>
+
                     {/* Social Icons */}
                     <div style={{ display: 'flex', gap: '1rem' }}>
                         {['twitter', 'github'].map(platform => (
