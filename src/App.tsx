@@ -23,7 +23,7 @@ function App() {
   const [prompt, setPrompt] = useState('');
   const [jsonOutput, setJsonOutput] = useState<string | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [apiKey] = useState(''); // simplified
+  const [apiKey] = useState(import.meta.env.VITE_GEMINI_API_KEY || '');
   const [showApp, setShowApp] = useState(false); // View switcher
   const [currentPage, setCurrentPage] = useState(''); // Hash-based routing
   const [mode, setMode] = useState('Balanced');
@@ -34,6 +34,9 @@ function App() {
     setIsGenerating(true);
     setJsonOutput(null);
 
+    // Debug log
+    // console.log("Generating with Key logic. Key exists?", !!apiKey);
+
     try {
       if (apiKey) {
         const service = new GeminiService(apiKey);
@@ -41,7 +44,7 @@ function App() {
         setJsonOutput(result);
       } else {
         // Fallback Mock Logic
-        // Fallback Mock Logic
+        // console.warn("No API Key found, using mock data.");
         setTimeout(() => {
           let mockData: any = {};
 
